@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  todoListVSCODE
+//  normalViewModel.todoListVSCODE
 //
 //  Created by David An on 2025-08-21.
 //
@@ -9,11 +9,11 @@ import SwiftUI
 
 struct listView: View {
 
-    @EnvironmentObject var listViewModel: listViewModel
+    @EnvironmentObject private var normalViewModel: listViewModel
 
-    @State var todoList: [todoModel] = [todoModel(title: "Sample Task 1", isStarred: false, isPinned: false),
-                                        todoModel(title: "Sample Task 2", isStarred: true, isPinned: false),
-                                        todoModel(title: "Sample Task 3", isStarred: false, isPinned: true)]
+    // @State var todoList: [todoModel] = [todoModel(title: "Sample Task 1", isStarred: false, isPinned: false),
+    //                                     todoModel(title: "Sample Task 2", isStarred: true, isPinned: false),
+    //                                     todoModel(title: "Sample Task 3", isStarred: false, isPinned: true)]
     // @State var tempList = ["Item1", "item2", "item3"]
     @State private var showSheet = false
 
@@ -21,11 +21,14 @@ struct listView: View {
         NavigationStack {
             List {
 
-                ForEach(Array(todoList.enumerated()), id: \.offset) { index, item in
+                ForEach(Array(normalViewModel.todoList.enumerated()), id: \.offset) { index, item in
                     listRowView(todo: item)
+                    .onTapGesture {
+                        normalViewModel.todoList[index].isDone.toggle()
+                    }
                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                             Button(role: .destructive) {
-                                todoList.remove(at: index)
+                                normalViewModel.todoList.remove(at: index)
                             } label: {
                                 Image(systemName: "trash")
                             }
@@ -33,7 +36,7 @@ struct listView: View {
 
 
                             Button {
-                                todoList[index].isStarred.toggle()
+                                normalViewModel.todoList[index].isStarred.toggle()
                             } label: {
                                 Image(systemName: item.isStarred ?  "star.slash" : "star.fill")
                                 .foregroundStyle(item.isStarred ? .white : .gray.opacity(0.4))
@@ -45,7 +48,7 @@ struct listView: View {
                 .onMove(perform: moveItem)
             }
             .sheet(isPresented: $showSheet) {
-                creationView(todoList: $todoList)
+                creationView(todoList: $normalViewModel.todoList)
                 .padding(.top, 15)
                     .presentationDetents([.height(120)])
             }
@@ -84,9 +87,9 @@ struct listView: View {
     }
 
     func deleteItem(at offsets: IndexSet) {
-        todoList.remove(atOffsets: offsets)
+        normalViewModel.todoList.remove(atOffsets: offsets)
     }
     func moveItem(from source: IndexSet, to destination: Int) {
-        todoList.move(fromOffsets: source, toOffset: destination)
+        normalViewModel.todoList.move(fromOffsets: source, toOffset: destination)
     }
 }
