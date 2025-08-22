@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct creationView: View {
-    @Binding var todoList: [todoModel]
+    @EnvironmentObject var normalViewModel: listViewModel
 
     @FocusState private var isFocused: Bool
 
@@ -51,9 +51,9 @@ struct creationView: View {
             .padding(.leading, 20)
             VStack {
                 Button {
-                    let newTodo = todoModel(title: objectTitle, isStarred: objectIsStarred, isPinned: objectIsPinned)
-                    todoList.append(newTodo)
-
+                    normalViewModel.addItem(
+                        item: todoModel(title: objectTitle, isStarred: objectIsStarred, isPinned: objectIsPinned)
+                    )
                 } label: {
                     VStack {
                         Image(systemName: "return")

@@ -1,6 +1,6 @@
 import Foundation
 
-struct todoModel: Identifiable {
+struct todoModel: Identifiable, Encodable, Decodable {
     var id: String = UUID().uuidString
     var title: String
     var isDone: Bool = false

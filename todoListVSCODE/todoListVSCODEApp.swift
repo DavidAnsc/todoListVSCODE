@@ -9,11 +9,7 @@ import SwiftUI
 
 @main
 struct todoListVSCODEApp: App {
-    @StateObject private var normalViewModel = listViewModel(todoList: [
-        todoModel(title: "Sample Task 1", isDone: false, isStarred: false, isPinned: false),
-        todoModel(title: "Sample Task 2", isDone: false, isStarred: true, isPinned: false),
-        todoModel(title: "Sample Task 3", isDone: false, isStarred: false, isPinned: true)
-    ])
+    @StateObject private var normalViewModel = listViewModel(todoList: [])
     var body: some Scene {
         WindowGroup {
             listView()

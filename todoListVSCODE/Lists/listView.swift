@@ -20,15 +20,25 @@ struct listView: View {
     var body: some View {
         NavigationStack {
             List {
-
                 ForEach(Array(normalViewModel.todoList.enumerated()), id: \.offset) { index, item in
                     listRowView(todo: item)
                     .onTapGesture {
-                        normalViewModel.todoList[index].isDone.toggle()
+                        normalViewModel.toggleCompletion(item: item)
                     }
+                        .swipeActions(edge: .leading, allowsFullSwipe: false) {
+                            Button {
+                                normalViewModel.togglePin(item: item)
+                            } label: {
+                                Image(systemName: item.isPinned ? "pin.slash.fill" : "pin.fill")
+                                    .foregroundStyle(item.isPinned ? Color.gray.opacity(0.4) : Color.blue)
+                            }
+                            .tint(item.isPinned ? Color(#colorLiteral(red: 0.5647058823529412, green: 0.5647058823529412, blue: 0.5647058823529412, alpha: 1.0)): Color.blue)
+                        }
+
+
                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                             Button(role: .destructive) {
-                                normalViewModel.todoList.remove(at: index)
+                                normalViewModel.removeItem(item: item)
                             } label: {
                                 Image(systemName: "trash")
                             }
@@ -36,7 +46,7 @@ struct listView: View {
 
 
                             Button {
-                                normalViewModel.todoList[index].isStarred.toggle()
+                                normalViewModel.toggleStar(item: item)
                             } label: {
                                 Image(systemName: item.isStarred ?  "star.slash" : "star.fill")
                                 .foregroundStyle(item.isStarred ? .white : .gray.opacity(0.4))
@@ -48,7 +58,8 @@ struct listView: View {
                 .onMove(perform: moveItem)
             }
             .sheet(isPresented: $showSheet) {
-                creationView(todoList: $normalViewModel.todoList)
+                creationView()
+                    .environmentObject(normalViewModel)
                 .padding(.top, 15)
                     .presentationDetents([.height(120)])
             }
@@ -82,6 +93,7 @@ struct listView: View {
                     }
                 }
             }
+            .onAppear { normalViewModel.getData() }
             .navigationTitle("Todo List")
         }
     }
