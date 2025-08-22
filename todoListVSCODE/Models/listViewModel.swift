@@ -42,7 +42,10 @@ class listViewModel: ObservableObject {
         } else {
             print("## Item not found in the list. ##")
         }
-        
+    }
+
+    func moveItem(from: IndexSet, to: Int) {
+        todoList.move(fromOffsets: from, toOffset: to)
     }
     
 

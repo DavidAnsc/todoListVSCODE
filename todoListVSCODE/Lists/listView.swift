@@ -53,13 +53,13 @@ struct listView: View {
                             }
                             .tint(item.isStarred ? Color.gray : Color(#colorLiteral(red: 0.8666666666666667, green: 0.7843137254901961, blue: 0.054901960784313725, alpha: 1.0)))
                         }
-                // .onDelete(perform: deleteItem)
+                        
                 }
-                .onMove(perform: moveItem)
+                .onMove(perform: normalViewModel.moveItem)
             }
             .sheet(isPresented: $showSheet) {
-                creationView()
-                    .environmentObject(normalViewModel)
+                creationView(showSheet: $showSheet)
+                    // .environmentObject(normalViewModel)
                 .padding(.top, 15)
                     .presentationDetents([.height(120)])
             }
@@ -98,10 +98,10 @@ struct listView: View {
         }
     }
 
-    func deleteItem(at offsets: IndexSet) {
-        normalViewModel.todoList.remove(atOffsets: offsets)
-    }
-    func moveItem(from source: IndexSet, to destination: Int) {
-        normalViewModel.todoList.move(fromOffsets: source, toOffset: destination)
-    }
+    // func deleteItem(at offsets: IndexSet) {
+    //     normalViewModel.todoList.remove(atOffsets: offsets)
+    // }
+    // func moveItem(from source: IndexSet, to destination: Int) {
+    //     normalViewModel.todoList.move(fromOffsets: source, toOffset: destination)
+    // }
 }

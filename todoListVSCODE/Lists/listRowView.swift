@@ -12,7 +12,7 @@ struct listRowView: View {
 
                 if todo.isDone {
                     Capsule()
-                        .foregroundStyle(Color.blue)
+                        .foregroundStyle(Color("Inner Capsule"))
                         .shadow(radius: 3)
                         .frame(width: 21, height: 15)
                 }
@@ -22,7 +22,7 @@ struct listRowView: View {
         
 
             Text(todo.title)
-            .foregroundStyle(todo.isDone ? Color.gray : Color.black)
+            .foregroundStyle(todo.isDone ? Color.gray : Color.primary)
                 .font(.system(size: 14))
                 .kerning(0.25)
             
@@ -30,7 +30,7 @@ struct listRowView: View {
 
             Image(systemName: "star.fill")
                 .font(.system(size: 12))
-                .foregroundStyle(todo.isStarred ? Color.yellow : Color.white)
+                .foregroundStyle(todo.isStarred ? Color.yellow : Color.clear)
                 .padding(.horizontal, 7)
         }
     }

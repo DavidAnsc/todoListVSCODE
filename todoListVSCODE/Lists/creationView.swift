@@ -5,6 +5,8 @@ struct creationView: View {
 
     @FocusState private var isFocused: Bool
 
+    @Binding var showSheet: Bool
+
     @State private var objectTitle: String = ""
     @State private var objectIsStarred: Bool = false
     @State private var objectIsPinned: Bool = false
@@ -54,6 +56,12 @@ struct creationView: View {
                     normalViewModel.addItem(
                         item: todoModel(title: objectTitle, isStarred: objectIsStarred, isPinned: objectIsPinned)
                     )
+                    isFocused = false
+                    objectIsPinned = false
+                    objectIsStarred = false
+                    objectTitle = ""
+                    showSheet = false
+
                 } label: {
                     VStack {
                         Image(systemName: "return")
@@ -76,9 +84,7 @@ struct creationView: View {
             .padding(.trailing, 20)
         }
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 isFocused = true
-            }
         }
         .onDisappear {
             isFocused = false
