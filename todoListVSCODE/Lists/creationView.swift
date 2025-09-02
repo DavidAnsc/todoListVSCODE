@@ -32,6 +32,7 @@ struct creationView: View {
                         .onTapGesture {
                             objectIsStarred.toggle()
                         }
+                        
                     Capsule()
                         .frame(width: 60, height: 35)
                         .foregroundColor(objectIsPinned ? .blue : .gray.opacity(0.2))
