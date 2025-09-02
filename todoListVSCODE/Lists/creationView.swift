@@ -26,9 +26,7 @@ struct creationView: View {
                         .overlay(
                             ZStack {
                                 Image(systemName: "star.fill")
-                                    .foregroundColor(objectIsStarred ? .white : .white.opacity(0.7))
-                                Image(systemName: "star")
-                                    .foregroundColor(.white.opacity(0.7))
+                                    .foregroundColor(objectIsStarred ? .white : .secondary.opacity(0.7))
                             }
                         )
                         .onTapGesture {
@@ -40,9 +38,7 @@ struct creationView: View {
                         .overlay(
                             ZStack {
                                 Image(systemName: "pin.fill")
-                                    .foregroundColor(objectIsPinned ? .white : .white.opacity(0.7))
-                                Image(systemName: "pin")
-                                    .foregroundColor(.white.opacity(0.7))
+                                    .foregroundColor(objectIsPinned ? .white : .secondary.opacity(0.7))
                             }
                         )
                         .onTapGesture {

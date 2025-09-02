@@ -11,6 +11,14 @@ class listViewModel: ObservableObject {
     func toggleCompletion(item: todoModel) {
         if let index = todoList.firstIndex(where: { $0.id == item.id }) {
             todoList[index].isDone.toggle()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.todoList.sort { first, second in
+                    if first.isPinned == second.isPinned {
+                        return !first.isDone && second.isDone
+                    }
+                    return first.isPinned && !second.isPinned
+                }
+            }
         } else {
             print("## Item not found in the list. ##")
         }

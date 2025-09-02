@@ -19,82 +19,171 @@ struct listView: View {
 
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(Array(normalViewModel.todoList.enumerated()), id: \.offset) { index, item in
-                    listRowView(todo: item)
-                    .onTapGesture {
-                        normalViewModel.toggleCompletion(item: item)
+            ZStack(alignment: .bottom) {
+                List {
+                    Section {
+                        ForEach(Array(normalViewModel.todoList.filter { $0.isPinned }.enumerated()), id: \.offset) { index, item in
+                            listRowView(todo: item)
+                                .onTapGesture {
+                                    withAnimation(.smooth(duration: 0.3)) {
+                                        normalViewModel.toggleCompletion(item: item)
+                                    }
+                                    // normalViewModel.toggleCompletion(item: item)
+                                }
+                                .swipeActions(edge: .leading, allowsFullSwipe: false) {
+                                    Button {
+                                        normalViewModel.togglePin(item: item)
+                                    } label: {
+                                        Image(systemName: item.isPinned ? "pin.slash.fill" : "pin.fill")
+                                            .foregroundStyle(item.isPinned ? Color.gray.opacity(0.4) : Color.blue)
+                                    }
+                                    .tint(item.isPinned ? Color(#colorLiteral(red: 0.5647058823529412, green: 0.5647058823529412, blue: 0.5647058823529412, alpha: 1.0)): Color.blue)
+                                }
+
+
+                                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                    Button(role: .destructive) {
+                                        normalViewModel.removeItem(item: item)
+                                    } label: {
+                                        Image(systemName: "trash")
+                                    }
+                                    .tint(Color.red)
+                                    
+
+                                    Button {
+                                        normalViewModel.toggleStar(item: item)
+                                    } label: {
+                                        Image(systemName: item.isStarred ?  "star.slash" : "star.fill")
+                                        .foregroundStyle(item.isStarred ? .white : .gray.opacity(0.4))
+                                    }
+                                    .tint(item.isStarred ? Color.gray : Color(#colorLiteral(red: 0.8666666666666667, green: 0.7843137254901961, blue: 0.054901960784313725, alpha: 1.0)))
+                                }
+                                
+                        }
+                        .onMove(perform: normalViewModel.moveItem)
+                    } header: {
+                        HStack {
+                            Label("Pinned Tasks", systemImage: "pin.fill")
+                                .padding(.bottom, 8)
+                                .foregroundStyle(Color.blue.opacity(0.7))
+                                .bold()
+
+                                .font(.system(size: 11))
+                            
+                            Spacer()
+
+                            Text("\(normalViewModel.todoList.filter { $0.isPinned }.count) ITEMS")
+                                .font(.system(size: 11))
+                                .foregroundStyle(Color.gray.opacity(0.7))
+                        }
                     }
-                        .swipeActions(edge: .leading, allowsFullSwipe: false) {
-                            Button {
-                                normalViewModel.togglePin(item: item)
-                            } label: {
-                                Image(systemName: item.isPinned ? "pin.slash.fill" : "pin.fill")
-                                    .foregroundStyle(item.isPinned ? Color.gray.opacity(0.4) : Color.blue)
-                            }
-                            .tint(item.isPinned ? Color(#colorLiteral(red: 0.5647058823529412, green: 0.5647058823529412, blue: 0.5647058823529412, alpha: 1.0)): Color.blue)
+                    
+                    Section {
+                        ForEach(Array(normalViewModel.todoList.filter { !$0.isPinned }.enumerated()), id: \.offset) { index, item in
+                            listRowView(todo: item)
+                                .onTapGesture {
+                                    withAnimation(.smooth(duration: 0.3)) {
+                                        normalViewModel.toggleCompletion(item: item)
+                                    }
+                                    // normalViewModel.toggleCompletion(item: item)
+                                }
+                                .swipeActions(edge: .leading, allowsFullSwipe: false) {
+                                    Button {
+                                        normalViewModel.togglePin(item: item)
+                                    } label: {
+                                        Image(systemName: item.isPinned ? "pin.slash.fill" : "pin.fill")
+                                            .foregroundStyle(item.isPinned ? Color.gray.opacity(0.4) : Color.blue)
+                                    }
+                                    .tint(item.isPinned ? Color(#colorLiteral(red: 0.5647058823529412, green: 0.5647058823529412, blue: 0.5647058823529412, alpha: 1.0)): Color.blue)
+                                }
+
+
+                                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                    Button(role: .destructive) {
+                                        normalViewModel.removeItem(item: item)
+                                    } label: {
+                                        Image(systemName: "trash")
+                                    }
+                                    .tint(Color.red)
+
+
+                                    Button {
+                                        normalViewModel.toggleStar(item: item)
+                                    } label: {
+                                        Image(systemName: item.isStarred ?  "star.slash" : "star.fill")
+                                        .foregroundStyle(item.isStarred ? .white : .gray.opacity(0.4))
+                                    }
+                                    .tint(item.isStarred ? Color.gray : Color(#colorLiteral(red: 0.8666666666666667, green: 0.7843137254901961, blue: 0.054901960784313725, alpha: 1.0)))
+                                }
+                                
+                        }
+                        .onMove(perform: normalViewModel.moveItem)
+                    } header: {
+                        HStack {
+                            Label("Normal Tasks", systemImage: "flag.fill")
+                                .padding(.bottom, 8)
+                                .foregroundStyle(Color.blue.opacity(0.7))
+                                .font(.system(size: 11))
+                            
+                            Spacer()
+
+                            Text("\(normalViewModel.todoList.filter { !$0.isPinned }.count) ITEMS")
+                                .font(.system(size: 11))
+                                .foregroundStyle(Color.gray.opacity(0.7))
                         }
 
-
-                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                            Button(role: .destructive) {
-                                normalViewModel.removeItem(item: item)
-                            } label: {
-                                Image(systemName: "trash")
-                            }
-                            .tint(Color.red)
-
-
-                            Button {
-                                normalViewModel.toggleStar(item: item)
-                            } label: {
-                                Image(systemName: item.isStarred ?  "star.slash" : "star.fill")
-                                .foregroundStyle(item.isStarred ? .white : .gray.opacity(0.4))
-                            }
-                            .tint(item.isStarred ? Color.gray : Color(#colorLiteral(red: 0.8666666666666667, green: 0.7843137254901961, blue: 0.054901960784313725, alpha: 1.0)))
-                        }
-                        
+                    }
                 }
-                .onMove(perform: normalViewModel.moveItem)
-            }
-            .sheet(isPresented: $showSheet) {
-                creationView(showSheet: $showSheet)
-                    // .environmentObject(normalViewModel)
-                .padding(.top, 15)
-                    .presentationDetents([.height(120)])
-            }
-            
-            .toolbar {
-                ToolbarItemGroup(placement: .topBarLeading) {
-                    EditButton()
-                        .foregroundColor(.white)
-                        .bold()
-                        .padding(.leading, 8)
-                        .background(
-                            Capsule()
-                                .fill(Color.orange.opacity(0.8))
-                                .frame(width: 50, height: 30)
-                        )
+                .sheet(isPresented: $showSheet) {
+                    creationView(showSheet: $showSheet)
+                        // .environmentObject(normalViewModel)
+                    .padding(.top, 15)
+                        .presentationDetents([.height(120)])
                 }
-
-
-                ToolbarItemGroup(placement: .topBarTrailing) {
-                    Button {
-                        showSheet = true
-                    } label: {
-                        Image(systemName: "plus")
-                            .bold()
+                
+                .toolbar {
+                    ToolbarItemGroup(placement: .topBarLeading) {
+                        EditButton()
                             .foregroundColor(.white)
+                            .bold()
+                            .padding(.leading, 8)
                             .background(
-                                Circle()
-                                    .fill(Color.blue)
-                                    .frame(width: 40, height: 40)
+                                Capsule()
+                                    .fill(Color.orange.opacity(0.8))
+                                    .frame(width: 50, height: 30)
                             )
                     }
+
+
+                    ToolbarItemGroup(placement: .topBarTrailing) {
+                        Button {
+                            showSheet = true
+                        } label: {
+                            Image(systemName: "plus")
+                                .bold()
+                                .foregroundColor(.white)
+                                .background(
+                                    Circle()
+                                        .fill(Color.blue)
+                                        .frame(width: 40, height: 40)
+                                )
+                        }
+                    }
+                }
+                .onAppear { normalViewModel.getData() }
+                .navigationTitle("Todo List")
+
+
+
+        
+                NavigationLink(destination: completedView()) {
+                    Label("Completed Ones", systemImage: "rectangle.stack")
+                    .foregroundStyle(Color.primary)
+                        .opacity(0.5)
+                        .fontDesign(.rounded)
+                        .padding(.bottom, 8)
                 }
             }
-            .onAppear { normalViewModel.getData() }
-            .navigationTitle("Todo List")
         }
     }
 
