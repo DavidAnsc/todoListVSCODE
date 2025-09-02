@@ -60,7 +60,7 @@ struct listView: View {
                                 }
                                 
                         }
-                        .onMove(perform: normalViewModel.moveItem)
+                        
                     } header: {
                         HStack {
                             Label("Pinned Tasks", systemImage: "pin.fill")
