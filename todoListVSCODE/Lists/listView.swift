@@ -40,7 +40,6 @@ struct listView: View {
                                     .tint(item.isPinned ? Color(#colorLiteral(red: 0.5647058823529412, green: 0.5647058823529412, blue: 0.5647058823529412, alpha: 1.0)): Color.blue)
                                 }
 
-
                                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                     Button(role: .destructive) {
                                         normalViewModel.removeItem(item: item)
@@ -48,7 +47,6 @@ struct listView: View {
                                         Image(systemName: "trash")
                                     }
                                     .tint(Color.red)
-                                    
 
                                     Button {
                                         normalViewModel.toggleStar(item: item)
@@ -58,7 +56,6 @@ struct listView: View {
                                     }
                                     .tint(item.isStarred ? Color.gray : Color(#colorLiteral(red: 0.8666666666666667, green: 0.7843137254901961, blue: 0.054901960784313725, alpha: 1.0)))
                                 }
-                                
                         }
                         
                     } header: {
@@ -69,9 +66,7 @@ struct listView: View {
                                 .bold()
 
                                 .font(.system(size: 11))
-                            
                             Spacer()
-
                             Text("\(normalViewModel.todoList.filter { $0.isPinned }.count) ITEMS")
                                 .font(.system(size: 11))
                                 .foregroundStyle(Color.gray.opacity(0.7))
