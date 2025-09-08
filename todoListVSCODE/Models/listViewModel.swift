@@ -8,6 +8,11 @@ class listViewModel: ObservableObject {
     }
     static let dataKey: String = "todoList"
 
+
+    
+
+
+
     func toggleCompletion(item: todoModel) {
         if let index = todoList.firstIndex(where: { $0.id == item.id }) {
             todoList[index].isDone.toggle()

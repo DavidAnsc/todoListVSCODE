@@ -16,13 +16,22 @@ struct listView: View {
     //                                     todoModel(title: "Sample Task 3", isStarred: false, isPinned: true)]
     // @State var tempList = ["Item1", "item2", "item3"]
     @State private var showSheet = false
-
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottom) {
 				List {
-					pinnedList()
-					normalList()
+                    if normalViewModel.todoList.filter({ $0.isPinned }).isEmpty && !normalViewModel.todoList.filter({ !$0.isPinned }).isEmpty {
+                        normalList()
+                    } else if normalViewModel.todoList.filter({ !$0.isPinned }).isEmpty && !normalViewModel.todoList.filter({ $0.isPinned }).isEmpty {
+                        pinnedList()
+                    } else if !normalViewModel.todoList.filter({ $0.isPinned }).isEmpty && !normalViewModel.todoList.filter({ !$0.isPinned }).isEmpty {
+                        pinnedList()
+                        normalList()
+                    } else {
+                        Text("No Tasks")
+                            .foregroundStyle(Color.gray.opacity(0.7))
+                            .italic()
+                    }
 				}
                 .sheet(isPresented: $showSheet) {
                     creationView(showSheet: $showSheet)
@@ -31,20 +40,8 @@ struct listView: View {
                         .presentationDetents([.height(120)])
                 }
                 
+                
                 .toolbar {
-                    ToolbarItemGroup(placement: .topBarLeading) {
-                        EditButton()
-                            .foregroundColor(.white)
-                            .bold()
-                            .padding(.leading, 8)
-                            .background(
-                                Capsule()
-                                    .fill(Color.orange.opacity(0.8))
-                                    .frame(width: 50, height: 30)
-                            )
-                    }
-
-
                     ToolbarItemGroup(placement: .topBarTrailing) {
                         Button {
                             showSheet = true

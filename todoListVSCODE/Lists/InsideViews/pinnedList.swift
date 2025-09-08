@@ -4,15 +4,16 @@ struct pinnedList: View {
 	@EnvironmentObject var normalViewModel: listViewModel
 	var body: some View {
 		Section {
-			ForEach(normalViewModel.todoList.filter { $0.isPinned }, id: \.id) { item in
-				@Bindable var Item = item
-				listRowView(isDone: $Item.isDone, isStarred: item.isStarred, title: item.title)
-					// .onTapGesture {
-					// 	withAnimation(.smooth(duration: 0.3)) {
-					// 		normalViewModel.toggleCompletion(item: item)
-					// 	}
-					// 	// normalViewModel.toggleCompletion(item: item)
-					// }
+
+
+			// TODO: Fix the data saving problem for completion toggle.
+			// The Item is not linked back to the original data source after
+			// being changed.
+
+
+
+			ForEach(Array(normalViewModel.todoList.filter { $0.isPinned }.enumerated()), id: \.offset) { index, item in
+				listRowView(itemNum: index)
 					.swipeActions(edge: .leading, allowsFullSwipe: false) {
 						Button {
 							normalViewModel.togglePin(item: item)
@@ -22,7 +23,6 @@ struct pinnedList: View {
 						}
 						.tint(item.isPinned ? Color(#colorLiteral(red: 0.5647058823529412, green: 0.5647058823529412, blue: 0.5647058823529412, alpha: 1.0)): Color.blue)
 					}
-				
 					.swipeActions(edge: .trailing, allowsFullSwipe: true) {
 						Button(role: .destructive) {
 							normalViewModel.removeItem(item: item)
@@ -39,6 +39,7 @@ struct pinnedList: View {
 						}
 						.tint(item.isStarred ? Color.gray : Color(#colorLiteral(red: 0.8666666666666667, green: 0.7843137254901961, blue: 0.054901960784313725, alpha: 1.0)))
 					}
+				
 			}
 			
 		} header: {
