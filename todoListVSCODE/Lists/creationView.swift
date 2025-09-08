@@ -4,10 +4,12 @@ struct creationView: View {
     @EnvironmentObject var normalViewModel: listViewModel
 
     @FocusState private var isFocused: Bool
+    @FocusState private var isNotesFocused: Bool
 
     @Binding var showSheet: Bool
 
     @State private var objectTitle: String = ""
+    @State private var objectNotes: String = ""
     @State private var objectIsStarred: Bool = false
     @State private var objectIsPinned: Bool = false
 
@@ -18,6 +20,15 @@ struct creationView: View {
                     .focused($isFocused)
                     .fontDesign(.monospaced)
                     .font(.system(size: 18))
+                    .padding(.bottom, 2)
+                    .onSubmit {
+                        isFocused = false
+                        isNotesFocused = true
+                    }
+                TextField("Notes here", text: $objectNotes)
+                    .focused($isNotesFocused)
+                    .fontDesign(.rounded)
+                    .font(.system(size: 15))
                     .padding(.bottom, 20)
                 HStack {
                     Capsule()
@@ -50,12 +61,13 @@ struct creationView: View {
             VStack {
                 Button {
                     normalViewModel.addItem(
-                        item: todoModel(title: objectTitle, isStarred: objectIsStarred, isPinned: objectIsPinned)
+                        item: todoModel(title: objectTitle, notes: objectNotes, isStarred: objectIsStarred, isPinned: objectIsPinned)
                     )
                     isFocused = false
                     objectIsPinned = false
                     objectIsStarred = false
                     objectTitle = ""
+                    objectNotes = ""
                     showSheet = false
 
                 } label: {

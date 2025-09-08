@@ -1,14 +1,25 @@
 import Foundation
 
-struct todoModel: Identifiable, Encodable, Decodable {
+@Observable
+class todoModel: Identifiable, Encodable, Decodable {
     var id: String = UUID().uuidString
     var title: String
+    var notes: String = ""
     var isDone: Bool = false
     var isStarred: Bool
     var isPinned: Bool
     
     
-    mutating func toggleDone() {
-        isDone.toggle()
+    func toggleDone() {
+        self.isDone.toggle()
     }
+
+    init(title: String, notes: String, isStarred: Bool, isPinned: Bool) {
+        self.title = title
+        self.notes = notes
+        self.isStarred = isStarred
+        self.isPinned = isPinned
+    }
+
+    
 }

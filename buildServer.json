@@ -12,8 +12,8 @@
 	"argv": [
 		"/opt/homebrew/bin/xcode-build-server"
 	],
-	"workspace": "/Users/david_an/Documents/coding projects active/todoListVSCODE/todoListVSCODE.xcodeproj/project.xcworkspace",
-	"build_root": "/Users/david_an/Library/Developer/Xcode/DerivedData/todoListVSCODE-gaoszugasayqaiauggeupjfaoyoc",
+	"workspace": "/Users/david_an/Documents/coding projects active/Old/todoListVSCODE/todoListVSCODE.xcodeproj/project.xcworkspace",
+	"build_root": "/Users/david_an/Library/Developer/Xcode/DerivedData/todoListVSCODE-emsiuqhcietbjqbiauuhzheyeeeh",
 	"scheme": "todoListVSCODE",
 	"kind": "xcode"
 }
