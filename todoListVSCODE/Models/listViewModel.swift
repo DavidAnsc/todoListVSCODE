@@ -10,7 +10,9 @@ class listViewModel: ObservableObject {
 
 
     
-
+    func getItemByID(id: String) -> todoModel? {
+        return todoList.first(where: { $0.id == id })
+    }
 
 
     func toggleCompletion(item: todoModel) {

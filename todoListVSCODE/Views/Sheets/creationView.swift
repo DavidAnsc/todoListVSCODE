@@ -12,8 +12,12 @@ struct creationView: View {
     @State private var objectNotes: String = ""
     @State private var objectIsStarred: Bool = false
     @State private var objectIsPinned: Bool = false
+    @State private var objectDueDate: Date = Date.now
     @State private var currentError: todoModel.errorType? = nil
     @State private var showCantCreateAlert: Bool = false
+
+    @State private var startDate: Date = Date.now
+    @State private var endDate: Date = Date.now.addingTimeInterval(60*60*24*365*5)
 
     var body: some View {
         HStack(spacing: 0) {
@@ -23,6 +27,7 @@ struct creationView: View {
                     .fontDesign(.monospaced)
                     .font(.system(size: 18))
                     .padding(.bottom, 2)
+                    .padding(.top, 10)
                     .onSubmit {
                         isFocused = false
                         isNotesFocused = true
@@ -32,7 +37,24 @@ struct creationView: View {
                     .fontDesign(.rounded)
                     .font(.system(size: 15))
                     .padding(.bottom, 20)
-                HStack {
+                HStack(alignment: .center) {
+                    ZStack {
+                        Capsule()
+                            .frame(width: 60, height: 35)
+                            .foregroundColor(.red)
+                            
+                        Image(systemName: "calendar")
+                                .foregroundColor(.white)
+
+
+                        DatePicker("", selection: $objectDueDate, in: startDate...endDate, displayedComponents: [.date])
+                            .colorMultiply(Color.clear)
+                            .frame(width: 60, height: 35)
+                    }
+                    Rectangle()
+                        .frame(width: 1, height: 25)
+                        .foregroundStyle(Color.gray.opacity(0.5))
+                        // .padding(.leading, 27)
                     Capsule()
                         .frame(width: 60, height: 35)
                         .foregroundColor(objectIsStarred ? .yellow : .gray.opacity(0.2))
@@ -58,18 +80,28 @@ struct creationView: View {
                             objectIsPinned.toggle()
                         }
                 }
+                .padding(.bottom, 10)
             }
             .padding(.leading, 20)
+            .padding(.vertical, 10)
+			.padding(.horizontal, 5)
+
+            // Rectangle()
+            //     .frame(width: 1, height: 90)
+            //     .foregroundStyle(Color.gray.opacity(0.5))
+
+            
             VStack {
                 Button {
                     checkRequirements2(objectTitle: objectTitle, objectNotes: objectNotes)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                         if !showCantCreateAlert {
                             showSheet = false
-                            normalViewModel.addItem(item: todoModel(title: objectTitle, notes: objectNotes, isStarred: objectIsStarred, isPinned: objectIsPinned))
+                            normalViewModel.addItem(item: todoModel(title: objectTitle, notes: objectNotes, dueDate: objectDueDate, isStarred: objectIsStarred, isPinned: objectIsPinned))
                             isFocused = false
                             objectIsPinned = false
                             objectIsStarred = false
+                            objectDueDate = Date.now
                             objectTitle = ""
                             objectNotes = ""
                             showSheet = false
@@ -98,6 +130,8 @@ struct creationView: View {
                 }
             }
             .padding(.trailing, 20)
+            .padding(.vertical, 10)
+			.padding(.horizontal, 5)
         }
         .onAppear {
                 isFocused = true

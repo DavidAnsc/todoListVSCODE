@@ -5,9 +5,11 @@ struct todoModel: Identifiable, Encodable, Decodable {
     var id: String = UUID().uuidString
     var title: String
     var notes: String = ""
+    var dueDate: Date = Date.now
     var isDone: Bool = false
     var isStarred: Bool
     var isPinned: Bool
+
     
     enum errorType: Encodable, Decodable {
         case titleSpaceOnly
@@ -82,16 +84,6 @@ struct todoModel: Identifiable, Encodable, Decodable {
             case .none:
                 return nil
             }
-    }
-
-
-
-
-    init(title: String, notes: String, isStarred: Bool, isPinned: Bool) {
-        self.title = title
-        self.notes = notes
-        self.isStarred = isStarred
-        self.isPinned = isPinned
     }
 
     
