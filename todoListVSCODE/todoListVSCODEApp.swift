@@ -12,8 +12,10 @@ struct todoListVSCODEApp: App {
     @StateObject private var normalViewModel = listViewModel(todoList: [])
     var body: some Scene {
         WindowGroup {
-            ListView()
-                .environmentObject(normalViewModel)
+//            feedView()
+                
+             RecentView()
+                 .environmentObject(normalViewModel)
         }
     }
 }

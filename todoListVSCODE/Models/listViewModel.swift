@@ -27,23 +27,30 @@ class listViewModel: ObservableObject {
                 }
             }
         } else {
-            print("## Item not found in the list. ##")
+            print("## item not found in the list. ##")
         }
     }
     func toggleStar(item: todoModel) {
         if let index = todoList.firstIndex(where: { $0.id == item.id }) {
             todoList[index].isStarred.toggle()
         } else {
-            print("## Item not found in the list. ##")
+            print("## item not found in the list. ##")
         }
     }
     func togglePin(item: todoModel) {
         if let index = todoList.firstIndex(where: { $0.id == item.id }) {
             todoList[index].isPinned.toggle()
         } else {
-            print("## Item not found in the list. ##")
+            print("## item not found in the list. ##")
         }
     }
+	func toggleHidden(item: todoModel) {
+		if let index = todoList.firstIndex(where: { $0.id == item.id }) {
+			todoList[index].isHidden.toggle()
+		} else {
+			print("## item not found in the list")
+		}
+	}
 
 
 

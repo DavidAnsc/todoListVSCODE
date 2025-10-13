@@ -15,65 +15,55 @@ struct menuView: View {
 						Rectangle()
 							.ignoresSafeArea()
 							.opacity(showMenu ? 0.25 : 0)
+							.foregroundStyle(Color.black)
 							.onTapGesture {
-								withAnimation(.smooth(duration: 0.3)) {
-									showMenu = false
-									XoffsetAmount = 0
-								}
+								showMenu = false
+								XoffsetAmount = 0
 							}
 						ZStack {							
 							HStack {
 								ZStack {
-									VStack(alignment: .center) {
-										ZStack {
+									VStack(alignment: .leading) {
+										NavigationLink {
+											TodayView()
+										} label: {
 											Label("Today", systemImage: "calendar.circle.fill")
-												.font(.headline)
-											NavigationLink("1", destination: TodayView())
-												.padding()
-												.foregroundStyle(Color.clear)
-												.contentShape(Rectangle())
+											.font(.headline)
+											.padding(4)
+											.contentShape(RoundedRectangle(cornerRadius:4))
+											.foregroundStyle(Color.primary)
 										}
-										ZStack {
-											Label("All Todos", systemImage: "list.bullet.circle.fill")
-												.font(.headline)
-											NavigationLink("2", destination: ListView())
-												.padding()
-												.foregroundStyle(Color.clear)
-												.contentShape(Rectangle())
+										.padding(.top, 15)
+
+										Spacer()
+
+										NavigationLink {
+											RecentView()
+										} label: {
+											Label("Recent", systemImage: "list.bullet.circle.fill")
+											.font(.headline)
+											.padding(4)
+											.contentShape(RoundedRectangle(cornerRadius:4))
+											.foregroundStyle(Color.primary)
 										}
-										ZStack {
-											Label("Feed", systemImage: "lanyardcard.fill")
-												.font(.headline)
-											NavigationLink("3", destination: FeedView())
-												.padding()
-												.foregroundStyle(Color.clear)
-												.contentShape(Rectangle())
-										}
+										.padding(.bottom, 15)
+										
 									}
-									.frame(width: 150, height: 190)
+									.frame(width: 150, height: 120)
 									.background(.ultraThinMaterial)
 									.cornerRadius(32)
 									.padding(.trailing, 7)
 									.offset(x: XoffsetAmount, y: yOffset)
 									
 									RoundedRectangle(cornerRadius: 32)
+									
 										.stroke(lineWidth: 2)
 										.foregroundStyle(Color.gray.opacity(0.6))
-										.frame(width: 150, height: 190)
+										.frame(width: 150, height: 120)
 										.padding(.trailing, 7)
 										.offset(x: XoffsetAmount, y: yOffset)
 								}
-								
-								
-								Capsule()
-									.foregroundStyle(Color.gray.opacity(0.6))
-									.frame(width: 12, height: barInChange ? 53 : 45)
-									.offset(x: XoffsetAmount, y: yOffset)
-									.padding(.trailing, 20)
-									.padding(.vertical, 15)
-									.contentShape(Rectangle())
-								
-									.gesture(
+								.gesture(
 										DragGesture()
 											.onChanged { value in
 												barInChange = true
@@ -115,11 +105,21 @@ struct menuView: View {
 									)
 								
 								
+								// Capsule()
+								// 	.foregroundStyle(Color.gray.opacity(0.6))
+								// 	.frame(width: 12, height: barInChange ? 53 : 45)
+								// 	.offset(x: XoffsetAmount, y: yOffset)
+								// 	.padding(.trailing, 20)
+								// 	.padding(.vertical, 15)
+								// 	.contentShape(Rectangle())
+								
+									
+								
+								
 							}
 						}
-						.offset(y:-200)
+						.offset(y:-255)
 						.padding(.leading, 10)
-						.transition(.opacity)
 					}
 				}
 			}

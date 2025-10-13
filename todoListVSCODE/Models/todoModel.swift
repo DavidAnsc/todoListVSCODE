@@ -9,6 +9,8 @@ struct todoModel: Identifiable, Encodable, Decodable {
     var isDone: Bool = false
     var isStarred: Bool
     var isPinned: Bool
+	
+	var isHidden: Bool = false
 
     
     enum errorType: Encodable, Decodable {
@@ -22,6 +24,12 @@ struct todoModel: Identifiable, Encodable, Decodable {
     
     var currentError: errorType? = nil
     var showCantCreateAlert: Bool = false
+	
+	
+//	mutating func toggleHidden() {
+//		self.isHidden.toggle()
+//	}
+	
     
     mutating func toggleDone() {
         self.isDone.toggle()
