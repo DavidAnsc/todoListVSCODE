@@ -7,7 +7,7 @@ struct ListView: View {
 	var body: some View {
 		if normalViewModel.todoList.filter({ $0.isPinned && !$0.isHidden }).isEmpty && !normalViewModel.todoList.filter({ !$0.isPinned && !$0.isHidden }).isEmpty {
 			Section {
-				ForEach(Array(normalViewModel.todoList.enumerated()), id: \.offset) { index, item in
+				ForEach(normalViewModel.todoList, id: \.id) { item in
 					if !item.isPinned && !item.isHidden {
 						ListRowView(item: item)
 							.onAppear {
@@ -20,7 +20,6 @@ struct ListView: View {
 					
 					
 				}
-				.onMove(perform: normalViewModel.moveItem)
 			} header: {
 				HStack(alignment: .top) {
 					Label("Normal Tasks", systemImage: "flag.fill")
@@ -42,7 +41,7 @@ struct ListView: View {
 			
 		} else if normalViewModel.todoList.filter({ !$0.isPinned && !$0.isHidden }).isEmpty && !normalViewModel.todoList.filter({ $0.isPinned && !$0.isHidden }).isEmpty {
 			Section {
-				ForEach(Array(normalViewModel.todoList.enumerated()), id: \.offset) { index, item in
+				ForEach(normalViewModel.todoList, id: \.id) { item in
 					if item.isPinned && !item.isHidden {
 						ListRowView(item: item)
 							.onAppear {
@@ -74,11 +73,9 @@ struct ListView: View {
 			
 		} else if !normalViewModel.todoList.filter({ $0.isPinned && !$0.isHidden }).isEmpty && !normalViewModel.todoList.filter({ !$0.isPinned && !$0.isHidden }).isEmpty {
 			Section {
-				ForEach(Array(normalViewModel.todoList.enumerated()), id: \.offset) { index, item in
+				ForEach(normalViewModel.todoList, id: \.id) { item in
 					if item.isPinned && !item.isHidden {
 						ListRowView(item: item)
-					} else {
-						EmptyView()
 					}
 					
 				}
@@ -101,7 +98,7 @@ struct ListView: View {
 			
 			
 			Section {
-				ForEach(Array(normalViewModel.todoList.enumerated()), id: \.offset) { index, item in
+				ForEach(normalViewModel.todoList, id: \.id) { item in
 					if !item.isPinned && !item.isHidden {
 						ListRowView(item: item)
 						// .onTapGesture {
@@ -114,7 +111,6 @@ struct ListView: View {
 					
 					
 				}
-				.onMove(perform: normalViewModel.moveItem)
 			} header: {
 				HStack(alignment: .top) {
 					Label("Normal Tasks", systemImage: "flag.fill")

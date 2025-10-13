@@ -10,7 +10,7 @@ struct ListViewForToday: View {
 	var body: some View {
 		if normalViewModel.todoList.filter({ $0.dueDate <= Date() && $0.isPinned && !$0.isHidden }).count >= 1 {
 			Section {
-				ForEach(Array(normalViewModel.todoList.enumerated()), id: \.offset) { index, item in
+				ForEach(normalViewModel.todoList, id: \.id) { item in
 					if item.isPinned && (item.dueDate == Date() || item.dueDate < Date()) && item.isHidden == false {
 						ListRowView(item: item)
 							.onAppear {
@@ -41,7 +41,7 @@ struct ListViewForToday: View {
 		
 		if normalViewModel.todoList.filter({ $0.dueDate <= Date() && !$0.isPinned && !$0.isHidden }).count >= 1 {
 			Section {
-				ForEach(Array(normalViewModel.todoList.enumerated()), id: \.offset) { index, item in
+				ForEach(normalViewModel.todoList, id: \.id) { item in
 					if !item.isPinned && (item.dueDate <= Date()) && item.isHidden == false {
 						ListRowView(item: item)
 							.onAppear {

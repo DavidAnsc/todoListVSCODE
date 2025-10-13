@@ -25,6 +25,7 @@ struct ListRowView: View {
 							.padding(2)
 							.contentShape(Rectangle())
 							.onTapGesture {
+								goingHiding = true
 								withAnimation(.smooth(duration: 0.3)) {
 									normalViewModel.toggleCompletion(item: item)
 									ListViewModel.getDoneHaptic()
@@ -97,23 +98,34 @@ struct ListRowView: View {
 								.shadow(radius: 3)
 								.frame(width: 25, height: 19)
 								.padding(4)
+							
+								.onAppear {
+									
+									
+									DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
+										if goingHiding && item.isDone {
+											DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+												if goingHiding && item.isDone {
+													normalViewModel.toggleHidden(item: item)
+												} else {
+													goingHiding = false
+												}
+											}
+										} else {
+											goingHiding = false
+										}
+									}
+									
+								}
+							
 								.onTapGesture {
+									goingHiding = false
 									withAnimation(.smooth(duration: 0.3)) {
 										normalViewModel.toggleCompletion(item: item)
-										goingHiding = false
 										ListViewModel.getCancelHaptic()
 									}
 								}
-								.onAppear {
-									goingHiding = true
-									
-									
-									DispatchQueue.main.asyncAfter(deadline: .now() + 2.2) {
-										if goingHiding {
-											normalViewModel.toggleHidden(item: item)
-										}
-									}
-								}
+								
 						}
 						.padding(.trailing, 3)
 						
