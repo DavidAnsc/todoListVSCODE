@@ -87,12 +87,12 @@ struct ListRowView: View {
 								.frame(width: 33, height: 25)
 								.padding(2)
 								.contentShape(Rectangle())
-								.onTapGesture {
-									withAnimation(.smooth(duration: 0.3)) {
-										normalViewModel.toggleCompletion(item: item)
-										ListViewModel.getDoneHaptic()
-									}
-								}
+//								.onTapGesture {
+//									withAnimation(.smooth(duration: 0.3)) {
+//										normalViewModel.toggleCompletion(item: item)
+//										ListViewModel.getDoneHaptic()
+//									}
+//								}
 							Capsule()
 								.foregroundStyle(Color("Inner Capsule"))
 								.shadow(radius: 3)
