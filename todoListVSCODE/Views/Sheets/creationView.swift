@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct creationView: View {
-    @EnvironmentObject var normalViewModel: listViewModel
+    @EnvironmentObject var normalViewModel: ListViewModel
 
     @FocusState private var isFocused: Bool
     @FocusState private var isNotesFocused: Bool
@@ -13,7 +13,7 @@ struct creationView: View {
     @State private var objectIsStarred: Bool = false
     @State private var objectIsPinned: Bool = false
     @State private var objectDueDate: Date = Date.now
-    @State private var currentError: todoModel.errorType? = nil
+    @State private var currentError: TodoModel.errorType? = nil
     @State private var showCantCreateAlert: Bool = false
 
     @State private var startDate: Date = Date.now
@@ -97,7 +97,7 @@ struct creationView: View {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                         if !showCantCreateAlert {
                             showSheet = false
-                            normalViewModel.addItem(item: todoModel(title: objectTitle, notes: objectNotes, dueDate: objectDueDate, isStarred: objectIsStarred, isPinned: objectIsPinned))
+                            normalViewModel.addItem(item: TodoModel(title: objectTitle, notes: objectNotes, dueDate: objectDueDate, isStarred: objectIsStarred, isPinned: objectIsPinned))
                             isFocused = false
                             objectIsPinned = false
                             objectIsStarred = false
@@ -148,15 +148,15 @@ struct creationView: View {
     func checkRequirements2(objectTitle: String, objectNotes: String) {
         if objectTitle.replacingOccurrences(of: " ", with: "") == "" {
             showCantCreateAlert = true
-            currentError = todoModel.errorType.titleSpaceOnly
+            currentError = TodoModel.errorType.titleSpaceOnly
             return
         } else if objectTitle.count < 2 {
             showCantCreateAlert = true
-            currentError = todoModel.errorType.titleTooShort
+            currentError = TodoModel.errorType.titleTooShort
             return
         } else if objectTitle.count > 250 {
             showCantCreateAlert = true
-            currentError = todoModel.errorType.titleTooLong
+            currentError = TodoModel.errorType.titleTooLong
             return
         } else {
             showCantCreateAlert = false
@@ -165,10 +165,10 @@ struct creationView: View {
 
         if objectNotes.count == 1 {
             showCantCreateAlert = true
-            currentError = todoModel.errorType.noteTooShort
+            currentError = TodoModel.errorType.noteTooShort
         } else if objectNotes.count > 250 {
             showCantCreateAlert = true
-            currentError = todoModel.errorType.noteTooLong
+            currentError = TodoModel.errorType.noteTooLong
         } else {
             showCantCreateAlert = false
         }

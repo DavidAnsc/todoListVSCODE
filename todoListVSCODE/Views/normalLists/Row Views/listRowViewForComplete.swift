@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct listRowViewForComplete: View {
-    let todo: todoModel
+    let todo: TodoModel
     var body: some View {
         HStack {
             // ZStack(alignment: .center) {

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ListView: View {
-	@EnvironmentObject var normalViewModel: listViewModel
+	@EnvironmentObject var normalViewModel: ListViewModel
 	@State var normalCount = 0
 	@State var pinnedCount = 0
 	var body: some View {

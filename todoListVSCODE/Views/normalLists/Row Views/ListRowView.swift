@@ -1,22 +1,9 @@
 import SwiftUI
 
 struct ListRowView: View {
+	@State var goingHiding = false
 	
-	func getDoneHaptic() {
-		let generator = UIImpactFeedbackGenerator(style: .rigid)
-		
-		generator.impactOccurred()
-	}
-	
-	func getCancelHaptic() {
-		let generator = UIImpactFeedbackGenerator(style: .light)
-		
-		generator.impactOccurred()
-	}
-	
-//	@State var hideItem = false
-	
-	@EnvironmentObject var normalViewModel: listViewModel
+	@EnvironmentObject var normalViewModel: ListViewModel
 	@State var showEditSheet: Bool = false
 	@State var itemHiding = false
 	@State var showPicker = false
@@ -25,7 +12,7 @@ struct ListRowView: View {
 		formatter.dateStyle = .short
 		return formatter
 	}
-	let item: todoModel
+	let item: TodoModel
 	var body: some View {
 		Group {
 			HStack {
@@ -40,7 +27,7 @@ struct ListRowView: View {
 							.onTapGesture {
 								withAnimation(.smooth(duration: 0.3)) {
 									normalViewModel.toggleCompletion(item: item)
-									getDoneHaptic()
+									ListViewModel.getDoneHaptic()
 								}
 							}
 							.padding(.trailing, 3)
@@ -102,7 +89,7 @@ struct ListRowView: View {
 								.onTapGesture {
 									withAnimation(.smooth(duration: 0.3)) {
 										normalViewModel.toggleCompletion(item: item)
-										getDoneHaptic()
+										ListViewModel.getDoneHaptic()
 									}
 								}
 							Capsule()
@@ -113,12 +100,18 @@ struct ListRowView: View {
 								.onTapGesture {
 									withAnimation(.smooth(duration: 0.3)) {
 										normalViewModel.toggleCompletion(item: item)
-										getCancelHaptic()
+										goingHiding = false
+										ListViewModel.getCancelHaptic()
 									}
 								}
 								.onAppear {
+									goingHiding = true
+									
+									
 									DispatchQueue.main.asyncAfter(deadline: .now() + 2.2) {
-										normalViewModel.toggleHidden(item: item)
+										if goingHiding {
+											normalViewModel.toggleHidden(item: item)
+										}
 									}
 								}
 						}

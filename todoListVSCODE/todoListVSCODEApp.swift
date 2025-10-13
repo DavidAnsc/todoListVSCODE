@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct todoListVSCODEApp: App {
-    @StateObject private var normalViewModel = listViewModel(todoList: [])
+    @StateObject private var normalViewModel = ListViewModel(todoList: [])
     var body: some Scene {
         WindowGroup {
 //            feedView()

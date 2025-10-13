@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ListViewForToday: View {
-	@EnvironmentObject var normalViewModel: listViewModel
+	@EnvironmentObject var normalViewModel: ListViewModel
 	
 	@Binding var normalCount: Int
 	@Binding var pinnedCount: Int

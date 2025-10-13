@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-struct todoModel: Identifiable, Encodable, Decodable {
+struct TodoModel: Identifiable, Encodable, Decodable {
     var id: String = UUID().uuidString
     var title: String
     var notes: String = ""
@@ -39,15 +39,15 @@ struct todoModel: Identifiable, Encodable, Decodable {
     mutating func checkRequirements(objectTitle: String, objectNotes: String) {
         if objectTitle.replacingOccurrences(of: " ", with: "") == "" {
             showCantCreateAlert = true
-            currentError = todoModel.errorType.titleSpaceOnly
+            currentError = TodoModel.errorType.titleSpaceOnly
             return
         } else if objectTitle.count < 2 {
             showCantCreateAlert = true
-            currentError = todoModel.errorType.titleTooShort
+            currentError = TodoModel.errorType.titleTooShort
             return
         } else if objectTitle.count > 250 {
             showCantCreateAlert = true
-            currentError = todoModel.errorType.titleTooLong
+            currentError = TodoModel.errorType.titleTooLong
             return
         } else {
             showCantCreateAlert = false
@@ -56,10 +56,10 @@ struct todoModel: Identifiable, Encodable, Decodable {
 
         if objectNotes.count == 1 {
             showCantCreateAlert = true
-            currentError = todoModel.errorType.noteTooShort
+            currentError = TodoModel.errorType.noteTooShort
         } else if objectNotes.count > 250 {
             showCantCreateAlert = true
-            currentError = todoModel.errorType.noteTooLong
+            currentError = TodoModel.errorType.noteTooLong
         } else {
             showCantCreateAlert = false
         }

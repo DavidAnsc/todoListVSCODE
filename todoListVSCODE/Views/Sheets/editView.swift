@@ -22,7 +22,7 @@ struct editView: View {
 
 
     @Binding var showEditSheet: Bool
-    @Binding var object: todoModel
+    @Binding var object: TodoModel
 	@Binding var showPicker: Bool
 
 

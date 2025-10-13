@@ -1,7 +1,8 @@
 import Foundation
+import SwiftUI
 
-class listViewModel: ObservableObject {
-    @Published var todoList: [todoModel] {
+class ListViewModel: ObservableObject {
+    @Published var todoList: [TodoModel] {
         didSet {
             saveData()
         }
@@ -10,12 +11,12 @@ class listViewModel: ObservableObject {
 
 
     
-    func getItemByID(id: String) -> todoModel? {
+    func getItemByID(id: String) -> TodoModel? {
         return todoList.first(where: { $0.id == id })
     }
 
 
-    func toggleCompletion(item: todoModel) {
+    func toggleCompletion(item: TodoModel) {
         if let index = todoList.firstIndex(where: { $0.id == item.id }) {
             todoList[index].isDone.toggle()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
@@ -30,21 +31,21 @@ class listViewModel: ObservableObject {
             print("## item not found in the list. ##")
         }
     }
-    func toggleStar(item: todoModel) {
+    func toggleStar(item: TodoModel) {
         if let index = todoList.firstIndex(where: { $0.id == item.id }) {
             todoList[index].isStarred.toggle()
         } else {
             print("## item not found in the list. ##")
         }
     }
-    func togglePin(item: todoModel) {
+    func togglePin(item: TodoModel) {
         if let index = todoList.firstIndex(where: { $0.id == item.id }) {
             todoList[index].isPinned.toggle()
         } else {
             print("## item not found in the list. ##")
         }
     }
-	func toggleHidden(item: todoModel) {
+	func toggleHidden(item: TodoModel) {
 		if let index = todoList.firstIndex(where: { $0.id == item.id }) {
 			todoList[index].isHidden.toggle()
 		} else {
@@ -54,11 +55,11 @@ class listViewModel: ObservableObject {
 
 
 
-    func addItem(item: todoModel) {
+    func addItem(item: TodoModel) {
         todoList.append(item)
     }
 
-    func removeItem(item: todoModel) {
+    func removeItem(item: TodoModel) {
         if let index = todoList.firstIndex(where: { $0.id == item.id }) {
             todoList.remove(at: index)
         } else {
@@ -74,22 +75,36 @@ class listViewModel: ObservableObject {
 
 
     func getData() {
-        guard let data = UserDefaults.standard.data(forKey: listViewModel.dataKey) else { return }
-        guard let decodedData = try? JSONDecoder().decode([todoModel].self, from: data) else { return }
+        guard let data = UserDefaults.standard.data(forKey: ListViewModel.dataKey) else { return }
+        guard let decodedData = try? JSONDecoder().decode([TodoModel].self, from: data) else { return }
 
         self.todoList = decodedData
     }
 
     func saveData() {
         let encodedData = try? JSONEncoder().encode(todoList)
-        UserDefaults.standard.set(encodedData, forKey: listViewModel.dataKey)
+        UserDefaults.standard.set(encodedData, forKey: ListViewModel.dataKey)
     }
 
 
+	
+	
+	static func getDoneHaptic() {
+		let generator = UIImpactFeedbackGenerator(style: .rigid)
+		
+		generator.impactOccurred()
+	}
+	
+	static func getCancelHaptic() {
+		let generator = UIImpactFeedbackGenerator(style: .light)
+		
+		generator.impactOccurred()
+	}
+	
+	
 
 
-
-    init(todoList: [todoModel]) {
+    init(todoList: [TodoModel]) {
         self.todoList = todoList
     }
 }

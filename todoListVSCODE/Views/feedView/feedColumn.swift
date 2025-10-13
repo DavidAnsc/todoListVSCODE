@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct feedColumn: View {
-	@Binding var newViewModel: listViewModel
+	@Binding var newViewModel: ListViewModel
 	
-	let item: todoModel
+	let item: TodoModel
 	let index: Int
 	
 	@State var completion: Bool = false
@@ -135,13 +135,13 @@ struct feedColumn: View {
 }
 
 #Preview {
-	@Previewable let item: todoModel = todoModel(title: "Sample Task 3", dueDate: Date.now.addingTimeInterval(86400), isStarred: false, isPinned: true)
+	@Previewable let item: TodoModel = TodoModel(title: "Sample Task 3", dueDate: Date.now.addingTimeInterval(86400), isStarred: false, isPinned: true)
 	@Previewable let index: Int = 2
-	@Previewable @State var newViewModel = listViewModel(todoList: [todoModel(title: "sample 1", notes: "hello this is the note part", isStarred: false, isPinned: true),
-										  todoModel(title: "Sample Task 2", dueDate: Date(), isStarred: true, isPinned: false),
-											todoModel(title: "Sample Task 3", dueDate: Date.now.addingTimeInterval(86400), isStarred: false, isPinned: true),
-										  todoModel(title: "Sample Task 4", dueDate: Date(), isStarred: false, isPinned: true),
-										  todoModel(title: "Sample Task 5", dueDate: Date(), isStarred: true, isPinned: false),
-										  todoModel(title: "Sample Task 6", dueDate: Date(), isStarred: false, isPinned: false)])
+	@Previewable @State var newViewModel = ListViewModel(todoList: [TodoModel(title: "sample 1", notes: "hello this is the note part", isStarred: false, isPinned: true),
+										  TodoModel(title: "Sample Task 2", dueDate: Date(), isStarred: true, isPinned: false),
+											TodoModel(title: "Sample Task 3", dueDate: Date.now.addingTimeInterval(86400), isStarred: false, isPinned: true),
+										  TodoModel(title: "Sample Task 4", dueDate: Date(), isStarred: false, isPinned: true),
+										  TodoModel(title: "Sample Task 5", dueDate: Date(), isStarred: true, isPinned: false),
+										  TodoModel(title: "Sample Task 6", dueDate: Date(), isStarred: false, isPinned: false)])
 	feedColumn(newViewModel: $newViewModel, item: item, index: index)
 }

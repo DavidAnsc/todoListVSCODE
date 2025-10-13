@@ -1,12 +1,12 @@
 import SwiftUI
 
 struct listViewForFeed: View {
-	@State var newViewModel: listViewModel = listViewModel(todoList: [todoModel(title: "Sample Task 1", dueDate: Date(), isStarred: false, isPinned: false),
-																  todoModel(title: "Sample Task 2", dueDate: Date(), isStarred: true, isPinned: false),
-																  todoModel(title: "Sample Task 3", dueDate: Date(), isStarred: false, isPinned: true),
-																  todoModel(title: "Sample Task 4", dueDate: Date(), isStarred: false, isPinned: true),
-																  todoModel(title: "Sample Task 5", dueDate: Date(), isStarred: true, isPinned: false),
-																  todoModel(title: "Sample Task 6", dueDate: Date(), isStarred: false, isPinned: false)])
+	@State var newViewModel: ListViewModel = ListViewModel(todoList: [TodoModel(title: "Sample Task 1", dueDate: Date(), isStarred: false, isPinned: false),
+																  TodoModel(title: "Sample Task 2", dueDate: Date(), isStarred: true, isPinned: false),
+																  TodoModel(title: "Sample Task 3", dueDate: Date(), isStarred: false, isPinned: true),
+																  TodoModel(title: "Sample Task 4", dueDate: Date(), isStarred: false, isPinned: true),
+																  TodoModel(title: "Sample Task 5", dueDate: Date(), isStarred: true, isPinned: false),
+																  TodoModel(title: "Sample Task 6", dueDate: Date(), isStarred: false, isPinned: false)])
 	
 	@Binding var normalCount: Int
 	@Binding var pinnedCount: Int

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RecentView: View {
 
-    @EnvironmentObject private var normalViewModel: listViewModel
+    @EnvironmentObject private var normalViewModel: ListViewModel
 
 	@Environment(\.colorScheme) var colorScheme
 	
@@ -133,7 +133,7 @@ struct VisualEffectView: UIViewRepresentable {
 }
 
 #Preview {
-	@Previewable @StateObject var normalViewModel: listViewModel = listViewModel(todoList: [todoModel(title: "Hi", isStarred: false, isPinned: false)])
+	@Previewable @StateObject var normalViewModel: ListViewModel = ListViewModel(todoList: [TodoModel(title: "Hi", isStarred: false, isPinned: false)])
 	RecentView()
 		.environmentObject(normalViewModel)
 		

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TodayView: View {
-	@EnvironmentObject private var normalViewModel: listViewModel
+	@EnvironmentObject private var normalViewModel: ListViewModel
 	
 	@Environment(\.colorScheme) var colorScheme: ColorScheme
 	
@@ -121,7 +121,7 @@ struct TodayView: View {
 	}
 }
 	#Preview {
-		@Previewable @StateObject var normalViewModel: listViewModel = listViewModel(todoList: [todoModel(title: "Item", isStarred: false, isPinned: false)])
+		@Previewable @StateObject var normalViewModel: ListViewModel = ListViewModel(todoList: [TodoModel(title: "Item", isStarred: false, isPinned: false)])
 		TodayView()
 			.environmentObject(normalViewModel)
 	}
