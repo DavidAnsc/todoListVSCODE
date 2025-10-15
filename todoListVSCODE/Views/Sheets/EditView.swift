@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct editView: View {
+struct EditView: View {
 
     // enum errorType {
     //     case titleSpaceOnly
@@ -22,8 +22,9 @@ struct editView: View {
 
 
     @Binding var showEditSheet: Bool
-    @Binding var object: TodoModel
+	@Binding var object: TodoModel
 	@Binding var showPicker: Bool
+	@Binding var showNoticeBar: Bool
 
 
     var body: some View {
@@ -53,12 +54,6 @@ struct editView: View {
 								.onTapGesture {
 									showPicker.toggle()
 								}
-						if showPicker {
-							DatePicker("", selection: $objectDueDate, in: startDate...endDate, displayedComponents: [.date])
-								.colorMultiply(Color.clear)
-								.frame(width: 60, height: 35)
-								
-						}
                     }
                     Rectangle()
                         .frame(width: 1, height: 25)
@@ -74,6 +69,7 @@ struct editView: View {
                             }
                         )
                         .onTapGesture {
+							ListViewModel.getCancelHaptic()
                             objectIsStarred.toggle()
                         }
                     Capsule()
@@ -86,6 +82,7 @@ struct editView: View {
                             }
                         )
                         .onTapGesture {
+							ListViewModel.getCancelHaptic()
                             objectIsPinned.toggle()
                         }
                 }
@@ -98,14 +95,42 @@ struct editView: View {
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                         
-                        if !object.showCantCreateAlert {
+						if !object.showCantCreateAlert && object.isPinned != objectIsPinned ||
+							object.isStarred != objectIsStarred ||
+							object.title != objectTitle ||
+							object.notes != objectNotes ||
+							object.dueDate != objectDueDate {
+							
+							ListViewModel.getClickHaptic()
+							
+							withAnimation(.smooth(duration: 0.3)) {
+								showNoticeBar = true
+							}
+							
                             showEditSheet = false
                             object.title = objectTitle
                             object.notes = objectNotes
                             object.dueDate = objectDueDate
                             object.isPinned = objectIsPinned
                             object.isStarred = objectIsStarred
-                        }
+							
+							DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+								withAnimation(.smooth(duration: 0.3)) {
+									showNoticeBar = false
+								}
+							}
+						} else if object.isPinned == objectIsPinned ||
+									object.isStarred == objectIsStarred ||
+									object.title == objectTitle ||
+									object.notes == objectNotes ||
+									object.dueDate == objectDueDate {
+							
+							showEditSheet = false
+							
+							
+						} else {
+							ListViewModel.getErrorHaptic()
+						}
                     }
                     
                     
@@ -122,8 +147,15 @@ struct editView: View {
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: 32)
-                            .fill(Color.green)
-                            .frame(width: 90, height: 90)
+							.fill(
+								object.isPinned == objectIsPinned &&
+								object.isStarred == objectIsStarred &&
+								object.title == objectTitle &&
+								object.notes == objectNotes &&
+								object.dueDate == objectDueDate
+								? Color.gray : Color.green
+							)
+							.frame(width: 90, height: 90)
                     )
                     
                 }
@@ -140,5 +172,10 @@ struct editView: View {
         .alert(isPresented: $object.showCantCreateAlert) {
             object.getAlert() ?? Alert(title: Text("Error"))
         }
+		.sheet(isPresented: $showPicker) {
+			DatePickerView(objectDueDate: $objectDueDate)
+				.padding(.top, 15)
+				.presentationDetents([.height(400)])
+		}
     }
 }

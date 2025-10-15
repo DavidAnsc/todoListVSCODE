@@ -14,18 +14,16 @@ struct TodayView: View {
 	
 	@State private var showSheet = false
 	@State private var showMenu = false
-	
-
-	@State private var normalCount = 0
-	@State private var pinnedCount = 0
+	@State private var showNoticeBar: Bool = false
+	@State private var showEditingBar: Bool = false
 	var body: some View {
 		NavigationStack {
 			ZStack(alignment: .leading) {
 				List {
-					ListViewForToday(normalCount: $normalCount, pinnedCount: $pinnedCount)
+					ListViewForToday(showEditingBar: $showEditingBar)
 				}
 				.sheet(isPresented: $showSheet) {
-					creationView(showSheet: $showSheet)
+					CreationView(showSheet: $showSheet, showNoticeBar: $showNoticeBar)
 					// .environmentObject(normalViewModel)
 						.padding(.top, 15)
 						.presentationDetents([.height(140)])
@@ -47,12 +45,14 @@ struct TodayView: View {
                             )
                             .onTapGesture {
                                 showMenu.toggle()
-                            }  
+								ListViewModel.getCancelHaptic()
+                            }
                     }
 					if !showMenu {
                         ToolbarItemGroup(placement: .topBarTrailing) {
                             Button {
                                 showSheet = true
+								ListViewModel.getCancelHaptic()
                             } label: {
                                 Image(systemName: "plus")
                                     .bold()
@@ -68,12 +68,12 @@ struct TodayView: View {
 				}
 				.onAppear { normalViewModel.getData() }
 				.navigationTitle("Today")
-				
-				.navigationBarTitleDisplayMode(.inline)
-				
+				.navigationBarTitleDisplayMode(.large)
 				.scrollDisabled(showMenu ? true : false)
 				
-				if normalViewModel.todoList.filter({ $0.isPinned && !$0.isHidden }).isEmpty && normalViewModel.todoList.filter({ !$0.isPinned && !$0.isHidden }).isEmpty && colorScheme == .dark {
+				
+				
+				if normalViewModel.todayPinned.isEmpty && normalViewModel.todayUnpinned.isEmpty && colorScheme == .dark {
 					HStack {
 						Spacer()
 						Image("noTask img")
@@ -82,7 +82,7 @@ struct TodayView: View {
 							.frame(width: 250)
 						Spacer()
 					}
-				} else if normalViewModel.todoList.filter({ $0.isPinned && !$0.isHidden }).isEmpty && normalViewModel.todoList.filter({ !$0.isPinned && !$0.isHidden }).isEmpty && colorScheme == .light {
+				} else if normalViewModel.todayPinned.isEmpty && normalViewModel.todayUnpinned.isEmpty && colorScheme == .light {
 					HStack {
 						Spacer()
 						Image("noTask imgDark")
@@ -94,10 +94,14 @@ struct TodayView: View {
 				}
 				
 				
+//				if show2ndNoticeBar == true {
+//					NoticeBar(style: true, showBar: $showNoticeBar)
+//				} else if showNoticeBar && show2ndNoticeBar != true {
+//					NoticeBar(style: false, showBar: $showNoticeBar)
+//				}
 				
-				
-				
-				
+				NoticeBar(style: false, showBar: $showNoticeBar)
+				NoticeBar(style: true, showBar: $showNoticeBar)
 				
 				menuView(showMenu: $showMenu)
                     .offset(x: 0, y: 0)

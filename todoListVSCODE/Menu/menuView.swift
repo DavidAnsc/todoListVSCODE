@@ -1,8 +1,16 @@
 import SwiftUI
 
 struct menuView: View {
+	
+//	init(showMenu: Binding<Bool>){
+//		UINavigationBar.setAnimationsEnabled(false)
+//		self._showMenu = showMenu
+//	}
+	
     @Binding var showMenu: Bool
-
+	
+	@Namespace var zoomTransition1
+	@Namespace var zoomTransition2
 
     @State var XoffsetAmount: CGFloat = 0
     @State var yOffset: CGFloat = 0
@@ -26,27 +34,39 @@ struct menuView: View {
 									VStack(alignment: .leading) {
 										NavigationLink {
 											TodayView()
+												.navigationTransition(.zoom(sourceID: "zoomTransition1", in: zoomTransition1))
 										} label: {
 											Label("Today", systemImage: "calendar.circle.fill")
 											.font(.headline)
 											.padding(4)
 											.contentShape(RoundedRectangle(cornerRadius:4))
 											.foregroundStyle(Color.primary)
+											.matchedTransitionSource(id: "zoomTransition1", in: zoomTransition1)
 										}
 										.padding(.top, 15)
+										.onTapGesture {
+											ListViewModel.getCancelHaptic()
+										}
+										
 
 										Spacer()
 
 										NavigationLink {
 											RecentView()
+												.navigationTransition(.zoom(sourceID: "zoomTransition2", in: zoomTransition2))
 										} label: {
 											Label("Recent", systemImage: "list.bullet.circle.fill")
 											.font(.headline)
 											.padding(4)
 											.contentShape(RoundedRectangle(cornerRadius:4))
 											.foregroundStyle(Color.primary)
+											.matchedTransitionSource(id: "zoomTransition2", in: zoomTransition2)
 										}
 										.padding(.bottom, 15)
+										.onTapGesture {
+											ListViewModel.getCancelHaptic()
+										}
+										
 										
 									}
 									.frame(width: 150, height: 120)
@@ -133,3 +153,4 @@ struct menuView: View {
 //	@Previewable @State var showMenu: Bool = false
 //	menuView(showMenu: $showMenu)
 //}
+

@@ -5,11 +5,11 @@ struct TodoModel: Identifiable, Encodable, Decodable {
     var id: String = UUID().uuidString
     var title: String
     var notes: String = ""
-    var dueDate: Date = Date.now
+	var dueDate: Date = Date.now
     var isDone: Bool = false
     var isStarred: Bool
     var isPinned: Bool
-	
+	var formattedDate: String = ""
 	var isHidden: Bool = false
 
     

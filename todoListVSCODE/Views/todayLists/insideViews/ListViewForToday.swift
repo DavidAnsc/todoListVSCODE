@@ -2,23 +2,15 @@ import SwiftUI
 
 struct ListViewForToday: View {
 	@EnvironmentObject var normalViewModel: ListViewModel
-	
-	@Binding var normalCount: Int
-	@Binding var pinnedCount: Int
-	
-	
+	@Binding var showEditingBar: Bool
 	var body: some View {
-		if normalViewModel.todoList.filter({ $0.dueDate <= Date() && $0.isPinned && !$0.isHidden }).count >= 1 {
+		if !normalViewModel.todayPinned.isEmpty {
 			Section {
 				ForEach(normalViewModel.todoList, id: \.id) { item in
 					if item.isPinned && (item.dueDate == Date() || item.dueDate < Date()) && item.isHidden == false {
-						ListRowView(item: item)
-							.onAppear {
-								pinnedCount += 1
-							}
-							.onDisappear {
-								pinnedCount -= 1
-							}
+						ListRowView(showEditingBar: $showEditingBar, item: item)
+					} else {
+						EmptyView()
 					}
 					
 				}
@@ -32,30 +24,29 @@ struct ListViewForToday: View {
 					
 						.font(.system(size: 12))
 					Spacer()
-					Text(pinnedCount == 1 || pinnedCount == 0 ? "\(pinnedCount) ITEM" : "\(pinnedCount) ITEMS")
+					
+					
+					
+					Text(normalViewModel.todayPinned.count == 1 || normalViewModel.todayPinned.count == 0 ? "\(normalViewModel.todayPinned.count) ITEM" : "\(normalViewModel.todayPinned.count) ITEMS")
 						.font(.system(size: 12))
 						.foregroundStyle(Color.gray.opacity(0.7))
 				}
 			}
 		}
 		
-		if normalViewModel.todoList.filter({ $0.dueDate <= Date() && !$0.isPinned && !$0.isHidden }).count >= 1 {
+		if !normalViewModel.todayUnpinned.isEmpty {
 			Section {
 				ForEach(normalViewModel.todoList, id: \.id) { item in
 					if !item.isPinned && (item.dueDate <= Date()) && item.isHidden == false {
-						ListRowView(item: item)
-							.onAppear {
-								normalCount += 1
-							}
-							.onDisappear {
-								normalCount -= 1
-							}
+						ListRowView(showEditingBar: $showEditingBar, item: item)
 						// .onTapGesture {
 						// 	withAnimation(.smooth(duration: 0.3)) {
 						// 		normalViewModel.toggleCompletion(item: item)
 						// 	}
 						// 	// normalViewModel.toggleCompletion(item: item)
 						// }
+					} else {
+						EmptyView()
 					}
 					
 					
@@ -70,7 +61,7 @@ struct ListViewForToday: View {
 					
 					Spacer()
 					
-					Text(normalCount == 1 || normalCount == 0 ? "\(normalCount) ITEM" : "\(normalCount) ITEMS")
+					Text(normalViewModel.todayUnpinned.count == 1 || normalViewModel.todayUnpinned.count == 0 ? "\(normalViewModel.todayUnpinned.count) ITEM" : "\(normalViewModel.todayUnpinned.count) ITEMS")
 						.font(.system(size: 12))
 						.foregroundStyle(Color.gray.opacity(0.7))
 				}

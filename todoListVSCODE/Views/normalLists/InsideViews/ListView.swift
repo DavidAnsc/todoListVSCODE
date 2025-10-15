@@ -2,20 +2,15 @@ import SwiftUI
 
 struct ListView: View {
 	@EnvironmentObject var normalViewModel: ListViewModel
-	@State var normalCount = 0
-	@State var pinnedCount = 0
+	@Binding var showEditingBar: Bool
 	var body: some View {
-		if normalViewModel.todoList.filter({ $0.isPinned && !$0.isHidden }).isEmpty && !normalViewModel.todoList.filter({ !$0.isPinned && !$0.isHidden }).isEmpty {
+		if !normalViewModel.recentUnpinned.isEmpty && normalViewModel.recentPinned.isEmpty {
 			Section {
 				ForEach(normalViewModel.todoList, id: \.id) { item in
 					if !item.isPinned && !item.isHidden {
-						ListRowView(item: item)
-							.onAppear {
-								normalCount += 1
-							}
-							.onDisappear {
-								normalCount -= 1
-							}
+						ListRowView(showEditingBar: $showEditingBar, item: item)
+					} else {
+						EmptyView()
 					}
 					
 					
@@ -29,7 +24,7 @@ struct ListView: View {
 					
 					Spacer()
 					
-					Text(normalCount == 1 || normalCount == 0 ? "\(normalViewModel.todoList.filter { !$0.isPinned }.count) ITEM" : "\(normalViewModel.todoList.filter { !$0.isPinned }.count) ITEMS")
+					Text(normalViewModel.recentUnpinned.count == 1 || normalViewModel.recentUnpinned.count == 0 ? "\(normalViewModel.recentUnpinned.count) ITEM" : "\(normalViewModel.recentUnpinned.count) ITEMS")
 						.font(.system(size: 12))
 						.foregroundStyle(Color.gray.opacity(0.7))
 				}
@@ -39,17 +34,13 @@ struct ListView: View {
 			
 			
 			
-		} else if normalViewModel.todoList.filter({ !$0.isPinned && !$0.isHidden }).isEmpty && !normalViewModel.todoList.filter({ $0.isPinned && !$0.isHidden }).isEmpty {
+		} else if normalViewModel.recentUnpinned.isEmpty && !normalViewModel.recentPinned.isEmpty {
 			Section {
 				ForEach(normalViewModel.todoList, id: \.id) { item in
 					if item.isPinned && !item.isHidden {
-						ListRowView(item: item)
-							.onAppear {
-								pinnedCount += 1
-							}
-							.onDisappear {
-								pinnedCount -= 1
-							}
+						ListRowView(showEditingBar: $showEditingBar, item: item)
+					} else {
+						EmptyView()
 					}
 					
 				}
@@ -63,7 +54,7 @@ struct ListView: View {
 					
 						.font(.system(size: 12))
 					Spacer()
-					Text(pinnedCount == 0 || pinnedCount == 1 ? "\(normalViewModel.todoList.filter { $0.isPinned }.count) ITEM" : "\(normalViewModel.todoList.filter { $0.isPinned }.count) ITEMS")
+					Text(normalViewModel.recentPinned.count == 0 || normalViewModel.recentPinned.count == 1 ? "\(normalViewModel.recentPinned.count) ITEM" : "\(normalViewModel.recentPinned.count) ITEMS")
 						.font(.system(size: 12))
 						.foregroundStyle(Color.gray.opacity(0.7))
 				}
@@ -71,11 +62,13 @@ struct ListView: View {
 			
 			
 			
-		} else if !normalViewModel.todoList.filter({ $0.isPinned && !$0.isHidden }).isEmpty && !normalViewModel.todoList.filter({ !$0.isPinned && !$0.isHidden }).isEmpty {
+		} else if !normalViewModel.recentUnpinned.isEmpty && !normalViewModel.recentPinned.isEmpty {
 			Section {
 				ForEach(normalViewModel.todoList, id: \.id) { item in
 					if item.isPinned && !item.isHidden {
-						ListRowView(item: item)
+						ListRowView(showEditingBar: $showEditingBar, item: item)
+					} else {
+						EmptyView()
 					}
 					
 				}
@@ -89,7 +82,7 @@ struct ListView: View {
 					
 						.font(.system(size: 12))
 					Spacer()
-					Text(normalViewModel.todoList.filter { $0.isPinned }.count == 0 || normalViewModel.todoList.filter { $0.isPinned }.count == 1 ? "\(normalViewModel.todoList.filter { $0.isPinned }.count) ITEM" : "\(normalViewModel.todoList.filter { $0.isPinned }.count) ITEMS")
+					Text(normalViewModel.recentPinned.count == 0 || normalViewModel.recentPinned.count == 1 ? "\(normalViewModel.recentPinned.count) ITEM" : "\(normalViewModel.recentPinned.count) ITEMS")
 						.font(.system(size: 12))
 						.foregroundStyle(Color.gray.opacity(0.7))
 				}
@@ -100,13 +93,15 @@ struct ListView: View {
 			Section {
 				ForEach(normalViewModel.todoList, id: \.id) { item in
 					if !item.isPinned && !item.isHidden {
-						ListRowView(item: item)
+						ListRowView(showEditingBar: $showEditingBar, item: item)
 						// .onTapGesture {
 						// 	withAnimation(.smooth(duration: 0.3)) {
 						// 		normalViewModel.toggleCompletion(item: item)
 						// 	}
 						// 	// normalViewModel.toggleCompletion(item: item)
 						// }
+					} else {
+						EmptyView()
 					}
 					
 					
@@ -120,7 +115,7 @@ struct ListView: View {
 					
 					Spacer()
 					
-					Text(normalViewModel.todoList.filter { !$0.isPinned }.count == 1 || normalViewModel.todoList.filter { !$0.isPinned }.count == 0 ? "\(normalViewModel.todoList.filter { !$0.isPinned }.count) ITEM" : "\(normalViewModel.todoList.filter { !$0.isPinned }.count) ITEMS")
+					Text(normalViewModel.recentUnpinned.count == 1 || normalViewModel.recentUnpinned.count == 0 ? "\(normalViewModel.recentUnpinned.count) ITEM" : "\(normalViewModel.recentUnpinned.count) ITEMS")
 						.font(.system(size: 12))
 						.foregroundStyle(Color.gray.opacity(0.7))
 				}
